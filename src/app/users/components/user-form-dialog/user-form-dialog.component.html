@@ -1,0 +1,54 @@
+<form [formGroup]="form" (ngSubmit)="save()" class="dialog">
+  <h2 mat-dialog-title class="title">
+    {{ isEdit ? 'Editar usuário' : 'Adicionar novo usuário' }}
+  </h2>
+
+  <mat-dialog-content class="content">
+    <mat-form-field appearance="fill" class="full">
+      <mat-label>Usuário (e-mail)</mat-label>
+      <input matInput type="email" formControlName="email" required />
+      <mat-error *ngIf="errorOf('email') as msg">{{ msg }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full">
+      <mat-label>Nome completo</mat-label>
+      <input matInput formControlName="name" required />
+      <mat-error *ngIf="errorOf('name') as msg">{{ msg }}</mat-error>
+    </mat-form-field>
+
+    <div class="row">
+      <mat-form-field appearance="fill" class="cpf">
+        <mat-label>CPF</mat-label>
+        <input matInput formControlName="cpf" required placeholder="000.000.000-00"
+               appMask="cpf" inputmode="numeric" maxlength="14" />
+        <mat-error *ngIf="errorOf('cpf') as msg">{{ msg }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="phone">
+        <mat-label>Número do telefone</mat-label>
+        <input matInput formControlName="phone" required placeholder="(00) 00000-0000"
+               appMask="phone" inputmode="tel" maxlength="15" />
+        <mat-error *ngIf="errorOf('phone') as msg">{{ msg }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="type">
+        <mat-label>Tipo</mat-label>
+        <mat-select formControlName="phoneType" required>
+          <mat-option *ngFor="let t of phoneTypes" [value]="t">{{ t }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <p class="hint">O usuário receberá uma senha provisória para acesso ao sistema por SMS.</p>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="actions">
+    <button mat-button type="button" (click)="cancel()">CANCELAR</button>
+    <button
+      mat-flat-button
+      color="primary"
+      type="submit"
+      [disabled]="form.invalid"
+    >SALVAR</button>
+  </mat-dialog-actions>
+</form>

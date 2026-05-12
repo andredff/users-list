@@ -1,0 +1,37 @@
+.dialog {
+  min-width: 480px;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding-top: 8px;
+}
+
+.full {
+  width: 100%;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 140px;
+  gap: 16px;
+}
+
+.hint {
+  color: #1976d2;
+  font-style: italic;
+  font-size: 13px;
+  margin: 8px 0 0;
+}
+
+.actions {
+  justify-content: flex-start;
+  padding: 0 24px 16px;
+}

@@ -1,0 +1,76 @@
+<mat-toolbar class="bar">
+  <button mat-icon-button class="menu-btn" aria-label="Menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <span class="title">USUÁRIOS</span>
+
+  <label class="search">
+    <mat-icon aria-hidden="true">search</mat-icon>
+    <input
+      type="search"
+      [formControl]="search"
+      placeholder="Pesquisar..."
+      aria-label="Pesquisar usuários"
+    />
+  </label>
+
+  <span class="spacer"></span>
+</mat-toolbar>
+
+<main class="content">
+  <header class="content-header">
+    <p class="label">Usuários cadastrados</p>
+    <span class="count" *ngIf="!loading() && !error()">{{ filtered().length }} resultado(s)</span>
+  </header>
+
+  <div *ngIf="loading()" class="state"><mat-spinner diameter="32"></mat-spinner></div>
+
+  <div *ngIf="error() as err" class="state error" role="alert">
+    <mat-icon>error_outline</mat-icon>
+    <span>{{ err }}</span>
+  </div>
+
+  <ng-container *ngIf="!loading() && !error()">
+    <mat-card
+      *ngFor="let user of paged(); trackBy: trackById"
+      class="user-card"
+      appearance="outlined"
+    >
+      <div class="avatar" [style.background]="avatarColor(user.name)">
+        {{ initialsOf(user.name) }}
+      </div>
+
+      <div class="info">
+        <div class="name">{{ user.name }}</div>
+        <div class="email">{{ user.email }}</div>
+      </div>
+
+      <span class="badge" [attr.data-type]="user.phoneType">{{ user.phoneType }}</span>
+
+      <button mat-icon-button class="edit" type="button"
+              [attr.aria-label]="'Editar ' + user.name" (click)="openEdit(user)">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </mat-card>
+
+    <p *ngIf="filtered().length === 0" class="empty">
+      <mat-icon>search_off</mat-icon>
+      Nenhum usuário encontrado.
+    </p>
+
+    <mat-paginator
+      *ngIf="filtered().length > pageSizeOptions[0]"
+      [length]="filtered().length"
+      [pageSize]="pageSize()"
+      [pageIndex]="pageIndex()"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="onPage($event)"
+      aria-label="Selecionar página"
+    ></mat-paginator>
+  </ng-container>
+</main>
+
+<button mat-fab color="warn" class="fab" aria-label="Novo usuário" (click)="openCreate()">
+  <mat-icon>add</mat-icon>
+</button>
